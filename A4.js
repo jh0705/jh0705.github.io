@@ -170,6 +170,6 @@ A4.Engine.prototype.update = function () {
 // ENTRY POINT
 var canvas = document.getElementById('canvas')
 var engine = new A4.Engine(canvas)
-engine.setScenario(new A4.ColumnScenario())
-// engine.setScenario(new A4.SolarSystemScenario())
+// engine.setScenario(new A4.ColumnScenario())
+engine.setScenario(new A4.SolarSystemScenario())
 engine.run()
