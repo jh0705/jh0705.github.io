@@ -15,9 +15,9 @@ A4.Flock = function (obstacles) {
 
 A4.Utils.extend(THREE.Object3D, A4.Flock)
 
-A4.Flock.prototype.update = function (t) {
+A4.Flock.prototype.update = function (t, c) {
   for (var i = 0; i < this.boids.length; i++) {
-    this.boids[i].update(t, this.boids, this.obstacles)  // Passing the entire list of boids to each boid individually
+    this.boids[i].update(t, this.boids, this.obstacles, c)  // Passing the entire list of boids to each boid individually
   }
 }
 A4.Flock.prototype.addBoid = function (b) {

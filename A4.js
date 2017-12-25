@@ -1,5 +1,5 @@
 /* global THREE */
-
+var default_colour = 0
 // ASSIGNMENT-SPECIFIC API EXTENSION
 THREE.Object3D.prototype.setMatrix = function (a) {
   this.matrix = a
@@ -97,6 +97,8 @@ A4.Engine.prototype.setupGrid = function () {
       gridShown = !gridShown
       gridShown ? scene.add(grid) : scene.remove(grid)
     }
+    else if (e.key === '1')
+    	default_colour = !default_colour
   })
 }
 
@@ -144,7 +146,7 @@ A4.Engine.prototype.update = function () {
 
   // Update sims
   if (this.scenario) this.scenario.update(time)
-  if (this.flock) this.flock.update(time)
+  if (this.flock) this.flock.update(time, default_colour)
 
   // Avoid setting viewport constantly
   if (this._cacheW !== window.innerWidth || this._cacheH !== window.innerHeight) {

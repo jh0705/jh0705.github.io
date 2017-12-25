@@ -25,6 +25,7 @@ const BOID_MAX_SPEED = 0.2
 const BOID_MAX_FORCE = 0.01
 
 var _boidCounter = 1
+var DEFAULT_COLOURING = 0
 
 A4.Boid = function (x, y, z) {
   // Call super()
@@ -65,7 +66,7 @@ A4.Boid = function (x, y, z) {
 
 A4.Utils.extend(THREE.Object3D, A4.Boid)
 
-A4.Boid.prototype.update = function (t, boids, obstacles) {
+A4.Boid.prototype.update = function (t, boids, obstacles, c) {
   t *= 100
   var nearest = this.getNearest(boids)
   // if (nearest.length === 0) return
@@ -86,17 +87,22 @@ A4.Boid.prototype.update = function (t, boids, obstacles) {
   // Update new location by integrating the velocity
   this.velocity.addScaledVector(this.acceleration, t)
     .clampLength(-BOID_MAX_SPEED, BOID_MAX_SPEED)
-
   // Update new location by integrating the velocity
   this.position.addScaledVector(this.velocity, t)
 
   this.lookAt(this.heading.copy(this.position).add(this.velocity))
   this.enforceBorders()
-  this.mesh.material.color.setRGB((this.position.x/BOID_WIDTH+1)/2,
-                                  (this.position.y/BOID_HEIGHT+1)/2,
-                                  (this.position.z/BOID_DEPTH+1)/2)
-  this.mesh.material.needsUpdate = true
 
+  if( !c )
+    this.mesh.material.color.setRGB((this.position.x/BOID_WIDTH+1)/2,
+                                    (this.position.y/BOID_HEIGHT+1)/2,
+                                    (this.position.z/BOID_DEPTH+1)/2)
+  else
+    this.mesh.material.color.setRGB((this.velocity.x/BOID_MAX_SPEED + 1)/2,
+                                    (this.velocity.y/BOID_MAX_SPEED + 1)/2,
+                                    (this.velocity.z/BOID_MAX_SPEED + 1)/2)
+  console.log(this.mesh.material.color)
+  this.mesh.material.needsUpdate = true
 }
 
 A4.Boid.prototype.getNearest = function (boids) {

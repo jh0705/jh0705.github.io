@@ -3,7 +3,7 @@
 // namespace
 var A4 = window.A4 || (window.A4 = {})
 
-const COLUMNS_COUNT = 0
+const COLUMNS_COUNT = 3
 
 A4.ColumnScenario = function (numColumns, width, height) {
   // Super()
