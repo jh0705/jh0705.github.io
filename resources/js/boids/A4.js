@@ -1,5 +1,5 @@
 /* global THREE */
-var default_colour = 0
+var default_colour = 1
 // ASSIGNMENT-SPECIFIC API EXTENSION
 THREE.Object3D.prototype.setMatrix = function (a) {
   this.matrix = a

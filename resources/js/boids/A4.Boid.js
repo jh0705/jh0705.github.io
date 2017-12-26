@@ -101,7 +101,6 @@ A4.Boid.prototype.update = function (t, boids, obstacles, c) {
     this.mesh.material.color.setRGB((this.velocity.x/BOID_MAX_SPEED + 1)/2,
                                     (this.velocity.y/BOID_MAX_SPEED + 1)/2,
                                     (this.velocity.z/BOID_MAX_SPEED + 1)/2)
-  console.log(this.mesh.material.color)
   this.mesh.material.needsUpdate = true
 }
 
