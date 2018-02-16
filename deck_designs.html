@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Demos</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+		</style>
+	</head>
+
+	<body>
+		<div id="info">
+            <button onclick="changeModel('original.obj')">1. Original</button>
+            <button onclick="changeModel('original_stair_with_ramp.obj')">2. With Ramp</button>
+            <button onclick="changeModel('stair_close.obj')">3. Stairs Nearby</button>
+            <button onclick="changeModel('stair_close_split.obj')">3. Stairs Nearby Split</button>
+            <button onclick="changeModel('stair_far.obj')">4. Stairs Far</button>
+        </div>
+
+        <script src="vendor/js/three.js"></script>
+        <script src="vendor/js/OrbitControls.js"></script>        
+		<script src="vendor/js/OBJLoader.js"></script>
+
+		<script>
+			var container;
+			var camera, controls, scene, renderer;
+			var mouseX = 0, mouseY = 0;
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+			init();
+			animate();
+			function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+                camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 2000);
+                scene = new THREE.Scene();
+				// scene
+				scene = new THREE.Scene();
+				var ambientLight = new THREE.AmbientLight( 0xccccff, 0.4 );
+                scene.add( ambientLight );
+                var directionalLight = new THREE.DirectionalLight( 0xFFF4D6, 0.5 );
+                directionalLight.position.set(1,1,0);
+                directionalLight.target.position.set(0,0,0);
+                scene.add( directionalLight );
+				var pointLight = new THREE.PointLight( 0xffffff, 0.5 );
+                camera.position.set(-7, 5, 8);
+                controls = new THREE.OrbitControls(camera);
+                controls.target.set(0, 2, 0);
+                controls.update();
+				camera.add( pointLight );
+				scene.add( camera );
+				// texture
+				var manager = new THREE.LoadingManager();
+				manager.onProgress = function ( item, loaded, total ) {
+					console.log( item, loaded, total );
+				};
+				var textureLoader = new THREE.TextureLoader( manager );
+				var texture = null;
+				// model
+				var onProgress = function ( xhr ) {
+					if ( xhr.lengthComputable ) {
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						console.log( Math.round(percentComplete, 2) + '% downloaded' );
+					}
+				};
+				var onError = function ( xhr ) {
+				};
+				var loader = new THREE.OBJLoader( manager );
+				loader.load( 'resources/data/original.obj', function ( object ) {
+                    object.name = 'house'
+					object.position.y = 0;
+					scene.add( object );
+				}, onProgress, onError );
+				//
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				//
+				window.addEventListener( 'resize', onWindowResize, false );
+			}
+			function onWindowResize() {
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			function onDocumentMouseMove( event ) {
+				mouseX = ( event.clientX - windowHalfX ) / 2;
+				mouseY = ( event.clientY - windowHalfY ) / 2;
+			}
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
+			function render() {
+				renderer.render( scene, camera );
+            }
+            
+            function changeModel(path) {
+                var selectedObject = scene.getObjectByName('house');
+                scene.remove( selectedObject );
+                var manager = new THREE.LoadingManager();
+
+                var loader = new THREE.OBJLoader( manager );
+
+                loader.load( 'resources/data/' + path, function ( object ) {
+					object.name = 'house';
+					object.position.y = 0;
+					scene.add( object );
+                }, null, null );
+            }
+		</script>
+
+	</body>
+</html>

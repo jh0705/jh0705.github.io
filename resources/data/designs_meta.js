@@ -1,14 +1,14 @@
 var file_names = {
 	"Deck Renovation Designs": [
-		"deck_design_1",
-		"deck_design_2",
-		"deck_design_3",
-		"deck_design_4",
+		"deck_designs"
 	],
-	"Sample": [
-        "webgl_physics_rope",
-	],
+	// "Sample": [
+    //     "webgl_physics_rope",
+	// ],
     "Boids": [
         "boids_boids",
     ],
+    // "Resume": [
+    //     "resume_2017.12.27"
+    // ]
 };
